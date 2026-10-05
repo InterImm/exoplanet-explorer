@@ -19,13 +19,12 @@ InterImm/interstellar#4. The story's present is 2219 (real date + 70,491 days); 
 
 ## State
 
-- Built in a Claude project thread; the code also sits in the project's shared folder at `exoplanet-explorer/`.
-- The data in the first commit comes from the **Open Exoplanet Catalogue** (5,400 planets, entries up to 2023),
-  because the build machine could not reach the NASA archive. Run the "Refresh planet data" Action once after
-  the first push to switch to NASA pscomppars (about 6,000 confirmed planets, current).
-- To do by a person: create the repo, enable Pages (Settings → Pages → Deploy from branch → main / root),
-  run the refresh Action once, decide on a domain (the old docs at InterImm/exoplanets use
-  exoplanets.interimm.org).
+- Repo InterImm/exoplanet-explorer created by L on 2026-10-05; code also mirrored in the Claude project's
+  shared folder at `exoplanet-explorer/`. A private preview runs as a claude.ai artifact.
+- Data: NASA Exoplanet Archive pscomppars via the "Refresh planet data" Action (first run 2026-10-05,
+  6,375 planets), weekly on Mondays. `scripts/build_data.py --source oec` is the fallback.
+- To do by a person: enable Pages (Settings → Pages → Deploy from branch → main / root) and decide on a
+  domain (the old docs at InterImm/exoplanets use exoplanets.interimm.org).
 
 ## Related repos
 
