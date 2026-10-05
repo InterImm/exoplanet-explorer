@@ -63,4 +63,4 @@ language of every phase 2 site; `app/explorer.css` only holds what is the explor
 
 This research has made use of the NASA Exoplanet Archive, which is operated by the California Institute of
 Technology, under contract with NASA under the Exoplanet Exploration Program. Fallback data: Open Exoplanet
-Catalogue (Rein 2012). Fonts: Unbounded, Instrument Sans, JetBrains Mono (SIL OFL). Code: MIT.
+Catalogue (Rein 2012). Fonts: Pixelify Sans, Instrument Sans, JetBrains Mono (SIL OFL). Code: MIT.
