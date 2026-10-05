@@ -11,7 +11,7 @@ InterImm/interstellar#4. The story's present is 2219 (real date + 70,491 days); 
 
 ## Constraints
 
-- Static, in-browser, zero running cost. GitHub Pages from `main`, root. No server, no build step.
+- Static, in-browser, zero running cost. GitHub Pages via Actions from `main`. No server, no build step.
 - The only scheduled work is the weekly data refresh Action, which commits `data/planets.json`.
 - Look: InterImm phase 2 kit, "Deep Field". Copied into `vendor/kit/` because interstellar.interimm.org
   was not live yet; switch the stylesheet link to `https://interstellar.interimm.org/kit/interimm.css`
@@ -23,8 +23,8 @@ InterImm/interstellar#4. The story's present is 2219 (real date + 70,491 days); 
   shared folder at `exoplanet-explorer/`. A private preview runs as a claude.ai artifact.
 - Data: NASA Exoplanet Archive pscomppars via the "Refresh planet data" Action (first run 2026-10-05,
   6,375 planets), weekly on Mondays. `scripts/build_data.py --source oec` is the fallback.
-- To do by a person: enable Pages (Settings → Pages → Deploy from branch → main / root) and decide on a
-  domain (the old docs at InterImm/exoplanets use exoplanets.interimm.org).
+- Live at https://interimm.org/exoplanet-explorer/ (Pages source: GitHub Actions, `.github/workflows/pages.yml`),
+  redeployed on every push to main and after each data refresh.
 
 ## Related repos
 
