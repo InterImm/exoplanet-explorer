@@ -1,19 +1,13 @@
 /* Exoplanet Explorer, on top of the InterImm phase 2 kit (https://interstellar.interimm.org/kit/). */
 
-/* Chart colours (--c1…, --seq-…, --div-…, --plot-…) come from the kit. Only the explorer's own: */
+/* Chart colours (--c1…, --seq-…, --div-…, --plot-…) come from the kit. Only the explorer's own:
+   candidates in the conservative zone are the subject (--signal); the zone bands are drawn in our voice. */
 :root {
-  --plot-point: var(--beam);
-  --c-opt: var(--beam);
-  --hz-cons: rgb(23 160 90 / 0.20);
-  --hz-opt: rgb(23 160 90 / 0.08);
-  --hz-line: rgb(23 120 70 / 0.55);
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --hz-cons: rgb(60 200 120 / 0.18);
-    --hz-opt: rgb(60 200 120 / 0.07);
-    --hz-line: rgb(110 220 150 / 0.5);
-  }
+  --plot-point: var(--c1);
+  --c-opt: var(--c1);
+  --hz-cons: rgb(169 156 255 / 0.17);
+  --hz-opt: rgb(169 156 255 / 0.07);
+  --hz-line: rgb(169 156 255 / 0.5);
 }
 
 /* layout: .app-shell, .app-side and .app-detail come from the kit */
@@ -57,7 +51,7 @@ td sup { font-size: 0.65em; color: var(--muted); margin-left: 0.15em; }
 .flag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
 /* habitable-zone badges: the conservative zone is a candidate, so it takes the signal colour */
 .zone-cons { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
-.zone-opt-inner, .zone-opt-outer { border-color: transparent; background: var(--beam-soft); color: var(--beam); }
+.zone-opt-inner, .zone-opt-outer { border-color: transparent; background: color-mix(in srgb, var(--c1) 16%, transparent); color: var(--c1); }
 #table-more { margin-top: 0.75rem; }
 
 /* ranking */
@@ -67,7 +61,7 @@ td sup { font-size: 0.65em; color: var(--muted); margin-left: 0.15em; }
 .weight small { display: block; color: var(--muted); font-size: 0.75rem; line-height: 1.3; }
 .weight output { font-family: var(--font-mono); text-align: right; }
 .bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 1.1rem; }
-.bar { width: calc(0.25rem + var(--w) * 0.18rem); height: calc(2px + var(--v) * 1rem); background: var(--beam); border-radius: 2px 2px 0 0; opacity: calc(0.35 + var(--w) * 0.13); }
+.bar { width: calc(0.25rem + var(--w) * 0.18rem); height: calc(2px + var(--v) * 1rem); background: var(--c1); border-radius: 2px 2px 0 0; opacity: calc(0.35 + var(--w) * 0.13); }
 
 /* shortlist */
 #compare-wrap .cluster { margin-bottom: 0.9rem; }
