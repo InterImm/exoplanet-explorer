@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm test
+      - name: Data builder parses
+        run: python3 -m py_compile scripts/build_data.py
+      - name: Data file is well formed
+        run: python3 -c "import json; d=json.load(open('data/planets.json')); assert d['meta']['count']==len(d['rows'])>1000; assert all(len(r)==len(d['fields']) for r in d['rows'])"

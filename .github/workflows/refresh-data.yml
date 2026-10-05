@@ -1,0 +1,39 @@
+# Weekly snapshot of the NASA Exoplanet Archive into data/planets.json.
+# The site stays static: this job is the only thing that talks to the archive.
+name: Refresh planet data
+
+on:
+  schedule:
+    - cron: "17 4 * * 1"   # Mondays 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Build data/planets.json from the archive
+        run: python3 scripts/build_data.py --source nasa
+      - name: Test the physics against the new data
+        run: npm test
+      - name: Commit if anything changed
+        run: |
+          if git diff --quiet -- data/planets.json; then echo "No change."; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/planets.json
+          git commit -m "Refresh planet data from the NASA Exoplanet Archive"
+          git push
