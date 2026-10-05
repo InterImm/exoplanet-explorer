@@ -31,7 +31,7 @@ function writeHash() {
   const h = new URLSearchParams();
   for (const [k, v] of Object.entries(S)) if (v !== DEFAULTS[k]) h.set(k, v);
   const s = h.toString();
-  history.replaceState(null, "", s ? `#${s}` : location.pathname + location.search);
+  try { history.replaceState(null, "", s ? `#${s}` : location.pathname + location.search); } catch { /* sandboxed frames may refuse */ }
 }
 const pins = () => new Set(S.pins ? S.pins.split("|") : []);
 const setPins = (set) => { S.pins = [...set].join("|"); };
