@@ -19,6 +19,7 @@ import io
 import json
 import re
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -93,35 +94,35 @@ def nasa_rows(text):
     for r in csv.DictReader(io.StringIO(text)):
         reflink = r.get("pl_rade_reflink") or ""
         yield {
-            "name": r["pl_name"],
-            "host": r["hostname"],
+            "name": r.get("pl_name"),
+            "host": r.get("hostname"),
             "status": "controversial" if r.get("pl_controv_flag") == "1" else "confirmed",
-            "method": r["discoverymethod"],
-            "year": num(r["disc_year"]),
-            "facility": r["disc_facility"],
-            "np": num(r["sy_pnum"]),
-            "ns": num(r["sy_snum"]),
-            "per": num(r["pl_orbper"]),
-            "a": num(r["pl_orbsmax"]),
-            "e": num(r["pl_orbeccen"]),
-            "inc": num(r["pl_orbincl"]),
-            "rade": num(r["pl_rade"]),
+            "method": r.get("discoverymethod"),
+            "year": num(r.get("disc_year")),
+            "facility": r.get("disc_facility"),
+            "np": num(r.get("sy_pnum")),
+            "ns": num(r.get("sy_snum")),
+            "per": num(r.get("pl_orbper")),
+            "a": num(r.get("pl_orbsmax")),
+            "e": num(r.get("pl_orbeccen")),
+            "inc": num(r.get("pl_orbincl")),
+            "rade": num(r.get("pl_rade")),
             "rade_est": 1 if "calculated" in reflink.lower() else 0,
-            "masse": num(r["pl_bmasse"]),
-            "massprov": r["pl_bmassprov"],
-            "insol": num(r["pl_insol"]),
-            "teq": num(r["pl_eqt"]),
-            "st_spt": r["st_spectype"],
-            "st_teff": num(r["st_teff"]),
-            "st_rad": num(r["st_rad"]),
-            "st_mass": num(r["st_mass"]),
-            "st_lum": num(r["st_lum"]),
-            "st_met": num(r["st_met"]),
-            "st_age": num(r["st_age"]),
-            "ra": num(r["ra"]),
-            "dec": num(r["dec"]),
-            "dist": num(r["sy_dist"]),
-            "vmag": num(r["sy_vmag"]),
+            "masse": num(r.get("pl_bmasse")),
+            "massprov": r.get("pl_bmassprov"),
+            "insol": num(r.get("pl_insol")),
+            "teq": num(r.get("pl_eqt")),
+            "st_spt": r.get("st_spectype"),
+            "st_teff": num(r.get("st_teff")),
+            "st_rad": num(r.get("st_rad")),
+            "st_mass": num(r.get("st_mass")),
+            "st_lum": num(r.get("st_lum")),
+            "st_met": num(r.get("st_met")),
+            "st_age": num(r.get("st_age")),
+            "ra": num(r.get("ra")),
+            "dec": num(r.get("dec")),
+            "dist": num(r.get("sy_dist")),
+            "vmag": num(r.get("sy_vmag")),
             "updated": (r.get("rowupdate") or "")[:10],
         }
 
@@ -223,8 +224,25 @@ def pack(rows):
 
 def fetch(url, timeout=180):
     req = urllib.request.Request(url, headers={"User-Agent": "InterImm exoplanet-explorer"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read().decode("utf-8")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.read().decode("utf-8")
+    except urllib.error.HTTPError as err:
+        sys.exit(f"{err} for {url}\n{err.read().decode('utf-8', 'replace')[:2000]}")
+
+
+def tap(query):
+    return fetch(f"{TAP}?{urllib.parse.urlencode({'query': query, 'format': 'csv'})}")
+
+
+def nasa_download():
+    """Ask for the columns we use that the table actually has, so a renamed column costs one field, not the build."""
+    have = set(next(csv.reader(io.StringIO(tap("select top 1 * from pscomppars")))))
+    cols = [c for c in NASA_COLUMNS if c in have]
+    missing = sorted(set(NASA_COLUMNS) - have)
+    if missing:
+        print(f"pscomppars has no {', '.join(missing)}; those fields stay empty", file=sys.stderr)
+    return tap(f"select {','.join(cols)} from pscomppars")
 
 
 def main():
@@ -235,9 +253,7 @@ def main():
     args = ap.parse_args()
 
     if args.source == "nasa":
-        query = f"select {','.join(NASA_COLUMNS)} from pscomppars"
-        url = f"{TAP}?{urllib.parse.urlencode({'query': query, 'format': 'csv'})}"
-        text = Path(args.input).read_text() if args.input else fetch(url)
+        text = Path(args.input).read_text() if args.input else nasa_download()
         rows = list(nasa_rows(text))
         source = {
             "name": "NASA Exoplanet Archive",
