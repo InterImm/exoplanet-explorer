@@ -13,9 +13,8 @@ InterImm/interstellar#4. The story's present is 2219 (real date + 70,491 days); 
 
 - Static, in-browser, zero running cost. GitHub Pages via Actions from `main`. No server, no build step.
 - The only scheduled work is the weekly data refresh Action, which commits `data/planets.json`.
-- Look: InterImm phase 2 kit, "Deep Field". Copied into `vendor/kit/` because interstellar.interimm.org
-  was not live yet; switch the stylesheet link to `https://interstellar.interimm.org/kit/interimm.css`
-  once it is, and delete `vendor/kit/`.
+- Look: the InterImm phase 2 kit, "Deep Field", linked from https://interstellar.interimm.org/kit/ (stylesheet,
+  script, header, footer). The kit's spec page there is the design language; this site only adds its own parts.
 
 ## State
 

@@ -235,7 +235,7 @@ function sorted(list) {
   });
 }
 function starCell(p) { return `<td>${esc(p.st_spt || p.spclass || "–")}${p.st_teff ? ` <span class="muted">${fmt(p.st_teff, 4)} K</span>` : ""}</td>`; }
-function zoneCell(p) { return `<td>${p.zone ? `<span class="zone zone-${p.zone}">${ZONE_SHORT[p.zone]}</span>` : "–"}</td>`; }
+function zoneCell(p) { return `<td>${p.zone ? `<span class="badge zone-${p.zone}">${ZONE_SHORT[p.zone]}</span>` : "–"}</td>`; }
 function nameCell(p, pinset) {
   const on = pinset.has(p.name);
   return `<td class="name"><button class="pin" data-pin="${esc(p.name)}" aria-pressed="${on}" title="${on ? "Remove from" : "Add to"} shortlist">${on ? "★" : "☆"}</button>` +
@@ -320,8 +320,8 @@ function renderDetail() {
     <div class="detail-head">
       <p class="eyebrow">${esc(solar ? "Solar System" : p.host)}${p.status !== "confirmed" && !solar ? ` · <span class="flag">${p.status}</span>` : ""}</p>
       <h2>${esc(p.name)}</h2>
-      <p class="detail-type">${esc(p.type ?? "")}${p.zone ? ` · <span class="zone zone-${p.zone}">${ZONE_LABEL[p.zone]}</span>` : ""}</p>
-      <div class="row">
+      <p class="detail-type">${esc(p.type ?? "")}${p.zone ? ` · <span class="badge zone-${p.zone}">${ZONE_LABEL[p.zone]}</span>` : ""}</p>
+      <div class="cluster">
         ${solar ? "" : `<button class="btn btn-sm${on ? " btn-primary" : ""}" data-pin="${esc(p.name)}" aria-pressed="${on}">${on ? "★ On shortlist" : "☆ Add to shortlist"}</button>`}
         <button class="btn btn-sm btn-ghost" data-close>Close</button>
       </div>
@@ -477,7 +477,7 @@ async function copy(text, btn) {
 
 function stamp() {
   const src = META.source;
-  $("#data-stamp").innerHTML = `${META.count.toLocaleString("en-US")} planets · <a href="${esc(src.url)}">${esc(src.name)}</a> · built ${esc(META.built.slice(0, 10))}`;
+  $("#data-stamp").innerHTML = `<a href="${esc(src.url)}">${esc(src.name)}</a> · built ${esc(META.built.slice(0, 10))} · <a href="#about">method</a>`;
   $("#citation").textContent = src.citation;
 }
 
