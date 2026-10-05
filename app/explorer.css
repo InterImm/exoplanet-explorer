@@ -1,88 +1,36 @@
-/* Exoplanet Explorer, on top of the InterImm phase 2 kit (vendor/kit/interimm.css). */
+/* Exoplanet Explorer, on top of the InterImm phase 2 kit (https://interstellar.interimm.org/kit/). */
 
-/* chart tokens: light */
+/* Chart colours (--c1…, --seq-…, --div-…, --plot-…) come from the kit. Only the explorer's own: */
 :root {
-  --plot-grid: #e3e5ee;
-  --plot-axis: #c3c8d9;
-  --plot-context: rgb(86 93 120 / 0.16);
-  --plot-dim: #a3a8bb;
   --plot-point: var(--beam);
   --c-opt: var(--beam);
-  --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a;
-  --seq-1: #b7d3f6; --seq-2: #86b6ef; --seq-3: #5598e7; --seq-4: #2a78d6; --seq-5: #256abf; --seq-6: #184f95; --seq-7: #0d366b;
-  --div-cool-1: #f2b3ab; --div-cool-2: #e3695c; --div-cool-3: #b52a19;
-  --div-hot-1: #b7d3f6; --div-hot-2: #5598e7; --div-hot-3: #184f95;
-  --div-mid: #a9a8a2;
   --hz-cons: rgb(23 160 90 / 0.20);
   --hz-opt: rgb(23 160 90 / 0.08);
   --hz-line: rgb(23 120 70 / 0.55);
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --plot-grid: #1d2442;
-    --plot-axis: #2c355c;
-    --plot-context: rgb(160 167 198 / 0.14);
-    --plot-dim: #5b6283;
-    --c1: #3987e5; --c2: #d95926; --c3: #199e70;
-    --seq-1: #184f95; --seq-2: #1c5cab; --seq-3: #256abf; --seq-4: #3987e5; --seq-5: #6da7ec; --seq-6: #9ec5f4; --seq-7: #cde2fb;
-    --div-cool-1: #7d2c24; --div-cool-2: #c4463c; --div-cool-3: #ff8a73;
-    --div-hot-1: #1c4a8a; --div-hot-2: #3987e5; --div-hot-3: #9ec5f4;
-    --div-mid: #6c6b66;
     --hz-cons: rgb(60 200 120 / 0.18);
     --hz-opt: rgb(60 200 120 / 0.07);
     --hz-line: rgb(110 220 150 / 0.5);
   }
 }
 
-.muted { color: var(--muted); }
-.row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
-.btn-sm { min-height: 2.1rem; padding: 0.3rem 0.8rem; font-size: 0.88rem; }
-
-/* header */
-.ex-header { padding-inline: 1rem; max-width: none; }
-.ex-stamp { margin: 0; font-size: 0.75rem; color: var(--muted); flex: 1; }
-.ex-stamp a { color: inherit; }
-.ex-nav { display: flex; gap: 0.25rem; }
-
-/* layout */
-.ex {
-  display: grid; gap: 1.25rem; align-items: start;
-  grid-template-columns: 16.5rem minmax(0, 1fr);
-  padding: 1.25rem 1rem 3rem;
-}
-body.has-detail .ex { grid-template-columns: 16.5rem minmax(0, 1fr) 22rem; }
-.ex-filters { position: sticky; top: 5rem; max-height: calc(100vh - 6rem); overflow: auto; padding-right: 0.25rem; }
+/* layout: .app-shell, .app-side and .app-detail come from the kit */
 .ex-filters-toggle { display: none; }
-.ex-detail {
-  position: sticky; top: 5rem; max-height: calc(100vh - 6rem); overflow: auto;
-  padding: 1.25rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-}
 
 /* filters */
 .filter-form { display: grid; gap: 0.9rem; }
 .presets { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .filter-form .field input, .filter-form .field select { width: 100%; min-width: 0; font-size: 0.92rem; padding: 0.4rem 0.6rem; }
-.range, .checks { margin: 0; padding: 0; border: 0; min-width: 0; }
-.range legend, .checks legend { padding: 0; margin-bottom: 0.35rem; font-size: 0.9rem; color: var(--muted); }
-.range { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
-.range input {
-  width: 100%; min-width: 0; font: inherit; font-size: 0.92rem; color: var(--text); background: var(--surface);
-  border: 1px solid var(--border-strong); border-radius: 0.55rem; padding: 0.4rem 0.6rem;
-}
-.checks label { display: flex; gap: 0.45rem; align-items: center; font-size: 0.92rem; line-height: 1.6; }
-.checks small { font-size: 0.78rem; }
-input[type="checkbox"], input[type="range"] { accent-color: var(--accent); }
+.field-checks small { font-size: 0.78rem; }
 
 /* bar with tabs */
 .ex-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; margin-bottom: 0.9rem; }
-.tabs { display: inline-flex; gap: 0.15rem; padding: 0.2rem; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 0.8rem; }
-.tabs button {
-  font: inherit; font-size: 0.92rem; font-weight: 600; color: var(--muted); background: none; border: 0;
-  padding: 0.4rem 0.9rem; border-radius: 0.6rem; cursor: pointer;
-}
-.tabs button:hover { color: var(--text); }
-.tabs button[aria-selected="true"] { color: var(--text); background: var(--surface); box-shadow: 0 1px 2px rgb(0 0 0 / 0.12); }
+.ex-meta { display: grid; justify-items: end; gap: 0.1rem; }
 .ex-count { margin: 0; font-size: 0.85rem; color: var(--muted); }
+.ex-stamp { margin: 0; font-size: 0.72rem; color: var(--muted); }
+.ex-stamp a { color: inherit; }
 
 /* plot */
 .plot-controls { display: grid; gap: 0.6rem; margin-bottom: 0.75rem; }
@@ -92,22 +40,6 @@ input[type="checkbox"], input[type="range"] { accent-color: var(--accent); }
 .inline-field.check { gap: 0.35rem; }
 .plot { padding: 0; }
 .plot canvas { height: 480px; image-rendering: auto; touch-action: pan-y pinch-zoom; cursor: crosshair; }
-.plot-tip {
-  position: absolute; left: 0; top: 0; pointer-events: none; z-index: 2;
-  display: grid; gap: 0.1rem; max-width: 18rem; padding: 0.5rem 0.7rem;
-  background: var(--bg); color: var(--text); border: 1px solid var(--border-strong); border-radius: 0.55rem;
-  box-shadow: var(--shadow); font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.45;
-}
-.plot-tip[hidden] { display: none; }
-.plot-tip strong { font-family: var(--font); font-size: 0.88rem; }
-.plot-tip span { color: var(--muted); }
-.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; list-style: none; margin: 0.75rem 0 0.25rem; padding: 0; font-size: 0.85rem; color: var(--muted); }
-.legend li { display: inline-flex; align-items: center; gap: 0.4rem; }
-.legend .ramp { gap: 0.15rem; }
-.legend .ramp > span:not(.sw) { margin-inline: 0.3rem; }
-.sw { display: inline-block; width: 0.75rem; height: 0.75rem; border-radius: 50%; }
-.legend .ramp .sw { border-radius: 2px; width: 1.1rem; }
-.sw-ring { border: 2px solid var(--text); background: var(--bg); }
 
 /* tables */
 .ex-table { font-size: 0.88rem; }
@@ -123,8 +55,8 @@ td sup { font-size: 0.65em; color: var(--muted); margin-left: 0.15em; }
 .pin { font: inherit; background: none; border: 0; padding: 0 0.35rem 0 0; color: var(--muted); cursor: pointer; font-size: 1rem; line-height: 1; }
 .pin[aria-pressed="true"] { color: var(--accent); }
 .flag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
-.zone { display: inline-block; padding: 0 0.45rem; border-radius: 999px; font-size: 0.78rem; border: 1px solid var(--border-strong); color: var(--muted); }
-.zone-cons { border-color: transparent; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+/* habitable-zone badges: the conservative zone is a candidate, so it takes the signal colour */
+.zone-cons { border-color: transparent; background: var(--accent-soft); color: var(--accent); }
 .zone-opt-inner, .zone-opt-outer { border-color: transparent; background: var(--beam-soft); color: var(--beam); }
 #table-more { margin-top: 0.75rem; }
 
@@ -138,7 +70,7 @@ td sup { font-size: 0.65em; color: var(--muted); margin-left: 0.15em; }
 .bar { width: calc(0.25rem + var(--w) * 0.18rem); height: calc(2px + var(--v) * 1rem); background: var(--beam); border-radius: 2px 2px 0 0; opacity: calc(0.35 + var(--w) * 0.13); }
 
 /* shortlist */
-#compare-wrap .row { margin-bottom: 0.9rem; }
+#compare-wrap .cluster { margin-bottom: 0.9rem; }
 .compare-table th[scope="row"] { font-family: var(--font); font-size: 0.85rem; letter-spacing: 0; text-transform: none; color: var(--muted); white-space: nowrap; }
 .compare-table thead th { white-space: nowrap; }
 .compare-table thead a { color: var(--text); text-decoration: none; text-transform: none; letter-spacing: 0; font-family: var(--font); font-size: 0.92rem; font-weight: 700; }
@@ -154,19 +86,12 @@ td sup { font-size: 0.65em; color: var(--muted); margin-left: 0.15em; }
 .ex-detail .note { margin-top: 1.25rem; }
 .ex-detail .eyebrow { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; }
 
-/* narrow screens */
-@media (max-width: 75rem) {
-  body.has-detail .ex { grid-template-columns: 16.5rem minmax(0, 1fr); }
-  .ex-detail { grid-column: 2; position: static; max-height: none; }
-}
+/* narrow screens: the kit stacks the columns; the filters fold away behind a button */
 @media (max-width: 52rem) {
-  .ex, body.has-detail .ex { grid-template-columns: minmax(0, 1fr); padding-inline: 1rem; }
-  .ex-detail { grid-column: 1; }
-  .ex-filters { position: static; max-height: none; }
   .ex-filters-toggle { display: inline-flex; }
   .filter-form { display: none; margin-top: 0.75rem; }
   body.filters-open .filter-form { display: grid; }
-  .ex-stamp { flex-basis: 100%; order: 3; }
+  .ex-meta { justify-items: start; }
 }
 
 body:not(.ready) .ex-main .view { opacity: 0.4; }

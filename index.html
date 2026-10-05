@@ -6,26 +6,24 @@
   <title>Exoplanet Explorer · InterImm</title>
   <meta name="description" content="Explore and analyse every known exoplanet in the browser: filter, plot, rank by habitability and compare a shortlist. Data from the NASA Exoplanet Archive.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="vendor/kit/interimm.css">
+  <!-- the phase 2 kit, linked from its one source (InterImm/interstellar, kit/) -->
+  <link rel="stylesheet" href="https://interstellar.interimm.org/kit/interimm.css">
+  <script src="https://interstellar.interimm.org/kit/interimm.js" defer></script>
   <link rel="stylesheet" href="app/explorer.css">
   <script type="module" src="app/explorer.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
-  <div class="header-inner ex-header">
-    <a class="brand" href="./"><span class="brand-dot" aria-hidden="true"></span><span class="brand-name">Exoplanet Explorer</span><span class="brand-sub">InterImm</span></a>
-    <p class="ex-stamp readout" id="data-stamp">Loading planets…</p>
-    <nav class="ex-nav" aria-label="Site">
-      <a class="nav-link" href="#about" data-tab-link>About</a>
-      <a class="nav-link" href="https://github.com/InterImm/exoplanet-explorer">GitHub</a>
-    </nav>
+<header class="site-header" data-interimm-header data-lang="en" data-current="explorer" data-lang-cn=""
+        data-site="Exoplanet Explorer" data-site-url="./" data-width="full">
+  <div class="wrap-full header-inner">
+    <a class="brand" href="https://interstellar.interimm.org/en/"><span class="brand-dot" aria-hidden="true"></span><span class="brand-name">The Contact Era</span></a><a class="brand-site" href="./">Exoplanet Explorer</a>
   </div>
 </header>
 
-<main id="main" class="ex">
-  <aside class="ex-filters" aria-label="Filters">
+<main id="main" class="app-shell ex">
+  <aside class="app-side ex-filters" aria-label="Filters">
     <button class="btn btn-sm ex-filters-toggle" id="filters-toggle" aria-expanded="false" aria-controls="filter-form">Filters</button>
     <form id="filter-form" class="filter-form" onsubmit="return false">
       <div class="presets" id="presets"></div>
@@ -38,19 +36,19 @@
         <input type="number" data-f="maxly" min="0" step="any" placeholder="any">
       </label>
 
-      <fieldset class="range"><legend>Radius (R⊕)</legend>
+      <fieldset class="field-pair"><legend>Radius (R⊕)</legend>
         <input type="number" data-f="rmin" min="0" step="any" placeholder="min" aria-label="Radius minimum">
         <input type="number" data-f="rmax" min="0" step="any" placeholder="max" aria-label="Radius maximum">
       </fieldset>
-      <fieldset class="range"><legend>Mass (M⊕)</legend>
+      <fieldset class="field-pair"><legend>Mass (M⊕)</legend>
         <input type="number" data-f="mmin" min="0" step="any" placeholder="min" aria-label="Mass minimum">
         <input type="number" data-f="mmax" min="0" step="any" placeholder="max" aria-label="Mass maximum">
       </fieldset>
-      <fieldset class="range"><legend>Insolation (S⊕)</legend>
+      <fieldset class="field-pair"><legend>Insolation (S⊕)</legend>
         <input type="number" data-f="smin" min="0" step="any" placeholder="min" aria-label="Insolation minimum">
         <input type="number" data-f="smax" min="0" step="any" placeholder="max" aria-label="Insolation maximum">
       </fieldset>
-      <fieldset class="range"><legend>Star temperature (K)</legend>
+      <fieldset class="field-pair"><legend>Star temperature (K)</legend>
         <input type="number" data-f="tmin" min="0" step="any" placeholder="min" aria-label="Star temperature minimum">
         <input type="number" data-f="tmax" min="0" step="any" placeholder="max" aria-label="Star temperature maximum">
       </fieldset>
@@ -72,9 +70,9 @@
         </select>
       </label>
 
-      <fieldset class="checks" data-f="method"><legend>Discovery method <small>(none ticked = all)</small></legend></fieldset>
+      <fieldset class="field-checks" data-f="method"><legend>Discovery method <small>(none ticked = all)</small></legend></fieldset>
 
-      <fieldset class="checks" data-f="status"><legend>Status</legend>
+      <fieldset class="field-checks" data-f="status"><legend>Status</legend>
         <label><input type="checkbox" value="confirmed"> Confirmed</label>
         <label><input type="checkbox" value="controversial"> Controversial</label>
         <label><input type="checkbox" value="retracted"> Retracted</label>
@@ -84,7 +82,7 @@
     </form>
   </aside>
 
-  <section class="ex-main" aria-label="Results">
+  <section class="app-main ex-main" aria-label="Results">
     <div class="ex-bar">
       <div class="tabs" role="tablist">
         <button role="tab" data-tab="plot">Plot</button>
@@ -92,7 +90,10 @@
         <button role="tab" data-tab="rank">Rank</button>
         <button role="tab" data-tab="compare">Shortlist <span id="pin-count"></span></button>
       </div>
-      <p class="ex-count readout" id="count" aria-live="polite">Loading…</p>
+      <div class="ex-meta">
+        <p class="ex-count readout" id="count" aria-live="polite">Loading…</p>
+        <p class="ex-stamp readout" id="data-stamp">Loading planets…</p>
+      </div>
     </div>
 
     <div class="view" id="view-plot" role="tabpanel">
@@ -121,7 +122,7 @@
       </div>
       <figure class="scope plot" id="plot">
         <canvas role="img" aria-label="Scatter plot of the matching planets. The Table tab lists the same planets."></canvas>
-        <div class="plot-tip" hidden></div>
+        <div class="tooltip plot-tip" hidden></div>
       </figure>
       <ul class="legend" id="legend"></ul>
       <p class="note" id="plot-note"></p>
@@ -153,7 +154,7 @@
     <div class="view" id="view-compare" role="tabpanel" hidden>
       <p id="compare-empty" class="note">Your shortlist is empty. Star planets (☆) in the table, the ranking or a planet's details to compare them side by side with Earth.</p>
       <div id="compare-wrap" hidden>
-        <div class="row">
+        <div class="cluster">
           <button class="btn btn-sm" id="export-csv">Download CSV</button>
           <button class="btn btn-sm" id="copy-md">Copy as Markdown</button>
           <button class="btn btn-sm btn-ghost" id="copy-link">Copy link to this view</button>
@@ -168,7 +169,7 @@
     </div>
   </section>
 
-  <aside class="ex-detail" id="detail" aria-label="Planet details" hidden></aside>
+  <aside class="app-detail ex-detail" id="detail" aria-label="Planet details" hidden></aside>
 </main>
 
 <section class="section section-alt" id="about">
@@ -189,10 +190,9 @@
   </div>
 </section>
 
-<footer class="site-footer">
-  <div class="wrap footer-legal">
-    <span>InterImm · Exoplanet Explorer</span>
-    <a href="https://github.com/InterImm/exoplanet-explorer">Source on GitHub</a>
+<footer class="site-footer" data-interimm-footer>
+  <div class="wrap">
+    <p class="footer-legal"><span>InterImm · Exoplanet Explorer</span><a href="https://github.com/InterImm/exoplanet-explorer">Source on GitHub</a></p>
   </div>
 </footer>
 </body>

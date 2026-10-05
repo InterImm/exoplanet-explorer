@@ -55,7 +55,9 @@ npm test                   # node --test, no dependencies
 
 Files: `index.html`, `app/explorer.js` (state, filters, views), `app/plot.js` (canvas scatter),
 `app/physics.js` (derived quantities), `app/fields.js` (field labels and formatting), `app/explorer.css`.
-`vendor/kit/` is a copy of the InterImm phase 2 kit (Deep Field) from InterImm/interstellar.
+The look, header and footer come from the InterImm phase 2 kit (Deep Field), linked from
+https://interstellar.interimm.org/kit/ (source: InterImm/interstellar, `kit/`). The kit is the shared design
+language of every phase 2 site; `app/explorer.css` only holds what is the explorer's own.
 
 ## Credits
 
