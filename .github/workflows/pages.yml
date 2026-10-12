@@ -34,7 +34,7 @@ jobs:
       - name: Collect the site files
         run: |
           mkdir _site
-          cp -r index.html favicon.svg .nojekyll app data vendor _site/
+          cp -r index.html favicon.svg .nojekyll app data _site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
